@@ -1,5 +1,8 @@
 // const fetch = require('node-fetch')
 require('dotenv').config()
+const multer = require('multer')
+const fs = require('fs')
+const upload = multer({ dest: 'uploads/'})
 
 module.exports = function(app, passport, db) {
 
@@ -41,21 +44,66 @@ module.exports = function(app, passport, db) {
 
 // Got advice and help from my house on how to set up the api for my project. And also got help on how the code should look
 
-   app.post('/summarize', isLoggedIn, async (req, res) => {
+   app.post('/summarize', isLoggedIn, upload.single('audioFile'), async (req, res) => {
+    
+    let audioPath = null
+    
     try {
-      const { transcript } = req.body;
-      console.log('Transcript received:', transcript)
+      let transcriptText = req.body.transcript?.trim() || ""
 
-      const prompt = `Summarize the following podcast transcript that sounds like it still is coming from the host and is speaking to their audience. Make it conversational and engaging:"${transcript}"`
+      if (req.file) {
+        audioPath = req.file.path
+        const audioBuffer = fs.readFileSync(audioPath)
 
+        console.log("Audio file uploaded:", req.file.originalname)
+
+        const transcriptResponse = await fetch(
+          "https://api-inference.huggingface.co/models/openai/whisper-large-v3?wait_for_model=true",
+        {
+          method: "POST",
+          headers: {"Authorization": `Bearer ${process.env.API_KEY}`,},
+          body: audioBuffer
+        }
+      );
+
+      const transcriptData = await transcriptResponse.json()
+
+      if (transcriptData.error) {
+        console.log("Whisper error:", transcriptData.error)
+        return res.render("profile.ejs", {
+          user: req.user,
+          summaries: [],
+          summary: "Whisper model is loading. Try again."
+        })
+      }
+
+      transcriptText = transcriptData.text || transcriptData[0]?.text || ""
+      console.log("Transcribed text:", transcriptText)
+    }
+
+    if (!transcriptText || transcriptText.length < 5) {
+      return res.render('profile.ejs', {
+        user: req.user,
+        summaries: [],
+        summary: "Please paste a transcript or upload audio file."
+      })
+    }
+
+      // const { transcript } = req.body;
+      // console.log('Transcript received:', transcript)
+
+      const prompt = `Summarize the following podcast transcript. Write the summary as if you are the host speaking directly to your audience. 
+      Make it conversational, friendly, and engaging:"${transcriptText}"`.trim()
+
+      
       const response = await fetch(
         "https://router.huggingface.co/hf-inference/models/facebook/bart-large-cnn",
         {
-          method: 'post',
+          method: 'POST',
           headers: {Authorization: `Bearer ${process.env.API_KEY}`, "Content-Type": 'application/json'},
           body: JSON.stringify({
-            inputs: transcript,
-            parameters: {max_length: 150, min_length: 50, do_sample: true}
+            inputs: prompt,
+            parameters: {max_length: 250, min_length: 50, do_sample: true}
           })
         }
       )
@@ -66,23 +114,15 @@ module.exports = function(app, passport, db) {
       const summary = data[0]?.summary_text || "Could not get summary."
       console.log('Final summary:', summary)
       
-      db.collection('summaries').insertOne(
+      await db.collection('summaries').insertOne(
         {
           userId: req.user._id,
           summary: summary,
           dateOfSummary: new Date()
-        },
+        })
         
 
-        async (err) => {
-          if (err) {
-            console.log('Error saving your summary.', err)
-            return res.render('profile.ejs', {
-              user: req.user,
-              summaries: [],
-              summary: 'Error saving summary'
-            })
-          }
+       
 
           const summaries = await db.collection('summaries').find({userId: req.user._id}).sort({dateOfSummary: -1}).toArray();
 
@@ -90,8 +130,8 @@ module.exports = function(app, passport, db) {
             user: req.user,
             summaries: summaries
           })
-        }
-      )
+        
+      
     
     } catch (err) {
       console.log('Error getting summary from AI:', err);
@@ -100,6 +140,16 @@ module.exports = function(app, passport, db) {
         summaries: [],
         summary: 'Error getting summary',
       })
+    
+    } finally {
+      if (audioPath) {
+        try {
+          fs.unlinkSync(audioPath)
+          console.log('Audio file deleted:', audioPath)
+        }catch (unlinkErr) {
+          console.log('Error deleting audio file:', unlinkErr)
+        }
+      }
     }
 
    })

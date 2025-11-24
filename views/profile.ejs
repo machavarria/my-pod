@@ -56,13 +56,19 @@
         <div class="col-sm-8">
           <div class="well">
           <h3 class="fa-microphone">Summarize your Podcast</h3>
-          <p>Paste your podcast transcript to get a summary</p>
+          <p>Paste your podcast transcript or uplaod an audio file to get a summary.</p>
           
 
-          <form action="/summarize" method="POST" id="summarizePod">
+          <form action="/summarize" method="POST" enctype="multipart/form-data" id="summarizePod">
             <div class="form-group">
-            <textarea placeholder="Paste your transcript here" name="transcript" class="form-control" rows="8" required></textarea>
+            <textarea placeholder="Paste your transcript here" name="transcript" class="form-control" rows="8"></textarea>
             </div>
+
+            <div class="form-group">
+              <label>Or upload audio:</label>
+              <input type="file" name="audio" accept="audio/*" class="form-control">
+            </div>
+
             <button type="submit" class="btn btn-primary">Create Summary</button>
           </form>
           </div>
