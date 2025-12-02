@@ -1,5 +1,4 @@
-/* Used chatgpt to help with some styling */
-
+/* Dark mode base */
 body {
   background-color: #1c1c1c;
   color: #f5f5f5;
@@ -8,15 +7,16 @@ body {
   padding: 0;
 }
 
+/* Page header */
 .page-header {
   text-align: center;
   margin-bottom: 40px;
   padding-bottom: 10px;
-  border-bottom: 2px solid #ff3d00;
+  border-bottom: 2px solid #ff6b6b;
 }
 
 .page-header h1 {
-  color: #ff3d00;
+  color: #ff6b6b;
   font-size: 2rem;
   margin-bottom: 5px;
 }
@@ -28,7 +28,7 @@ body {
 
 .page-header .btn {
   margin-top: 10px;
-  background-color: #ff3d00;
+  background-color: #ff6b6b;
   border: none;
   color: #fff;
   border-radius: 4px;
@@ -38,182 +38,304 @@ body {
 }
 
 .page-header .btn:hover {
-  background-color: #e63600;
+  background-color: #e64c4c;
 }
 
-.well {
-  background-color: #222;
-  border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.7);
-  transition: transform 0.2s;
+/* Sidebar */
+.menu {
+  width: 230px;
+  background-color: #1f1f1f;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  padding: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
 }
 
-.well:hover {
-  transform: scale(1.02);
+.menu .title {
+  font-size: 3.5rem;
+  color: #ff6b6b;
+  margin-bottom: 3rem;
 }
 
-.well h3, .well h4 {
-  color: #ff3d00;
-  margin-bottom: 15px;
+.menu .dash {
+  position: absolute;
+  bottom: 20px; /* distance from the bottom */
+  width: 100%;
 }
 
-.well p {
-  color: #ccc;
-  font-size: 0.95rem;
+.menu .profile.logout {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  background-color: #333;
+  color: #fff;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.menu .profile.logout:hover {
+  background-color: #ff6b6b;
+}
+
+.menu .top-podcasts h3 {
+  margin-top: 30px;
+  color: #fff;
+}
+
+.menu .top-podcasts ul {
+  list-style: none;
+  padding: 0;
+}
+
+.menu .top-podcasts li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 10px;
 }
 
-.well a.btn {
-  background-color: #ff3d00;
-  color: #fff;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  font-weight: bold;
-  transition: 0.3s;
-}
-
-.well a.btn:hover {
-  background-color: #e63600;
-}
-
-.summary-item {
-  border-bottom: 1px solid #444;
-  padding: 10px 0;
-}
-
-.summary-item:last-child {
-  border-bottom: none;
-}
-
-.summary-item p {
-  margin: 5px 0 0 0;
-  color: #ccc;
-  font-size: 0.95rem;
-}
-
-.past-summaries {
-  max-height: 400px;
-  overflow-y: auto;
-  padding: 10px;
-  background-color: #2a2a2a;
-  border-left: 4px solid #ff3d00;
-  border-radius: 6px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
-}
-
-.summary-item {
-  padding: 10px;
-  border-bottom: 1px solid #444;
-}
-
-.summary-item:last-child {
-  border-bottom: none;
-}
-
-form#summarizePod {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-textarea.form-control {
+.follow-btn {
   background-color: #333;
   color: #fff;
   border: none;
-  border-radius: 6px;
-  min-height: 120px;
-  resize: vertical;
-  padding: 10px;
-}
-
-textarea.form-control::placeholder {
-  color: #aaa;
-}
-
-form#summarizePod button {
-  padding: 10px 15px;
-  background-color: #ff3d00;
-  border: none;
-  border-radius: 6px;
-  color: #fff;
-  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: 0.3s;
 }
 
-form#summarizePod button:hover {
-  background-color: #e63600;
+.follow-btn:hover {
+  background-color: #ff6b6b;
+  color: #fff;
 }
 
-.row {
+/* Main content */
+.createSpace {
+  margin-left: 240px;
+  padding: 2rem;
+}
+
+.projectHeader h1 {
+  font-size: 4rem;
+  margin-bottom: 0.5rem;
+}
+
+.projectHeader .paste {
+  color: #aaa;
+  font-size: 1.5rem;
+}
+
+/* Panel / Form */
+.panel {
+  background-color: #2a2a2a;
+  border: 1px solid #333;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.composer textarea,
+.composer input[type="file"] {
+  width: 100%;
+  max-width: 100%;
+  padding: 0.75rem;
+  resize: vertical;
+  margin-bottom: 1rem;
+  border: 1px solid #444;
+  border-radius: 0.5rem;
+  background-color: #1f1f1f;
+  color: #fff;
+}
+
+.composer textarea {
+  font-size: 2rem;
+}
+
+.composer textarea::placeholder {
+  color: #888;
+}
+
+.composer button {
+  background-color: #ff6b6b;
+  color: #fff;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1.5rem;
+  transition: background 0.2s;
+}
+
+.composer button:hover {
+  background-color: #e64c4c;
+}
+
+/* Block sections */
+.block {
+  margin-bottom: 2rem;
+}
+
+.result, .feed {
+  background-color: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 0.5rem;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+}
+
+.result h3, .feed strong {
+  font-size: 3.25rem;
+  color: #ff6b6b;
+}
+
+.feed strong {
+  font-size: 2.25rem;
+  color: #ff6b6b;
+}
+
+.scroll {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 10px;
+  border: 1px solid #444; /* border color fits your dark theme */
+  border-radius: 8px;
+  background-color: #2a2a2a;
+}
+
+.feed p {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+/* Copy button */
+.copy-summary {
+  background-color: #5c5c5c;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.copy-summary:hover {
+  background-color: #ff6b6b;
+}
+
+/* Hashtags */
+.hashtags {
+  margin-top: 0.5rem;
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 0.5rem;
 }
 
-.col-sm-4, .col-sm-8 {
-  flex: 1;
-}
-
-.jumbotron {
-  background-color: #222;
-  border-radius: 15px;
-  padding: 40px 20px;
-  text-align: center;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.7);
-  margin-top: 50px;
-}
-
-
-.jumbotron h1 {
-  color: #ff3d00;
-  font-size: 2.5rem;
-  margin-bottom: 20px;
-  text-shadow: 
-    0 0 2px #ff3d00,
-    0 0 4px #ff3d00,
-    0 0 6px #ff3d00; 
-}
-
-.jumbotron img {
-  width: 100%;
-  max-width: 800px;
-  border-radius: 12px;
-  margin: 20px 0;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-}
-
-.jumbotron p {
-  color: #ccc;
-  font-size: 2rem;
-  margin-bottom: 20px;
-}
-
-.jumbotron .btn {
-  margin: 5px;
-  background-color: #ff3d00;
+.tag {
+  background-color: #444;
   color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 10px 20px;
-  font-weight: bold;
-  transition: 0.3s;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.85rem;
 }
 
-.jumbotron .btn:hover {
-  background-color: #e63600;
+/* Search input */
+#search-summaries {
+  width: 99%;
+  padding: 8px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #444;
+  background-color: #1f1f1f;
+  color: #fff;
 }
 
+/* Related podcasts */
+.related-podcasts {
+  margin-top: 20px;
+}
 
-@media (max-width: 768px) {
-  .row {
-    flex-direction: column;
+.podcast-grid {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.podcast-card {
+  background-color: #1f1f1f;      /* matches dark theme */
+  border: 1px solid #444;         /* subtle border to separate cards */
+  border-radius: 6px;             /* rounded corners */
+  padding: 15px;                  /* space inside the card */
+  margin-bottom: 10px;            /* space between multiple cards */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5); /* subtle shadow for depth */
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.podcast-card h4 {
+  color: #ff6b6b;
+  font-size: 25px;
+}
+
+.podcast-card p {
+  color: #ccc;
+  font-size: 17px;
+}
+
+.podcast-card a {
+  background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.podcast-card a:hover {
+  color: #e64c4c;
+}
+
+/* Star rating */
+.rating i.fa-star {
+  color: #555;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.rating i.active {
+  color: #ffcc00;
+}
+
+.rating i:hover {
+  color: #ffcc00;
+}
+
+/* Scrollbar */
+.scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scroll::-webkit-scrollbar-track {
+  background: #1c1c1c;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+  background-color: #ff6b6b;
+  border-radius: 3px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .createSpace {
+    margin-left: 0;
+    padding: 1rem;
   }
-  .col-sm-4, .col-sm-8 {
+
+  .menu {
+    position: absolute;
     width: 100%;
+    z-index: 10;
   }
 }
-

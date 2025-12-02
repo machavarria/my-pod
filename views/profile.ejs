@@ -1,80 +1,125 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Podcast AI Companion</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="container">
+<div class="container-fluid">
 
-    <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> Podcast AI Companion</h1>
-        <p class="lead">Welcome back, <%= user.local.email %></p>
-        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+  <aside class="menu">
+    <h2 class="title">Podcast AI Companion</h2>
+
+    <section class="top-podcasts">
+      <h3>Top Podcasts</h3>
+      <ul>
+        <li>The AI Breakdown <button class="follow-btn">Follow</button></li>
+        <li>Tech Talk Daily <button class="follow-btn">Follow</button></li>
+        <li>Dev Chats <button class="follow-btn">Follow</button></li>
+      </ul>
+    </section>
+
+    <div class="dash">
+      <a href="/logout" class="profile logout">Sign Out</a>
     </div>
 
-    <div class="row">
+  </aside>
 
-        <!-- User information / Used Chatgpt to help with making the layout -->
-        <div class="col-sm-4">
-            <div class="well text-center">
-                <h3><span class="fa fa-user"></span> Profile</h3>
-                  <% if (user.local.email) { %>
-                    <p>
-                        <strong>id</strong>: <%= user._id %><br>
-                        <strong>email</strong>: <%= user.local.email %><br>
-                        <strong>password</strong>: <%= user.local.password %>
-                    </p>
+  <main class="createSpace">
 
-                    <a href="/unlink/local" class="btn btn-default">Unlink</a>
-                <% } else { %>
-                    <a href="/connect/local" class="btn btn-default">Connect Local</a>
-                <% } %>
+    <header class="projectHeader">
+      <h1>Dashboard</h1>
+      <p class="paste">Paste your podcast transcript or upload audio to generate a summary.</p>
+    </header>
 
+    <section class="panel">
+      <form action="/summarize" method="POST" enctype="multipart/form-data" class="composer">
+        <label class="newSummary"></label>
+        <textarea name="transcript" placeholder="Paste transcript here." rows="6"></textarea>
+        <input type="file" name="audioFile" accept="audio/*">
+        <button type="submit">Create Summary</button>
+      </form>
+    </section>
+
+    <% if (latestSummary) { %>
+    <section class="block">
+      <div class="result">
+        <h3>Latest Summary:</h3>
+        <p><%= latestSummary %></p>
+
+        <button class="copy-summary" data-text="<%= latestSummary %>">Copy Summary</button>
+
+        <% if (latestHashtags && latestHashtags.length > 0) { %>
+          <div class="hashtags">
+            <% latestHashtags.forEach(tag => { %> 
+            <span class="tag"><%= tag %></span>
+            <% }) %>
+          </div>
+        <% } %>
+
+        <div class="related-podcasts">
+          <h3>Related Podcasts:</h3>
+          <div class="podcast-grid">
+            <div class="podcast-card">
+              <h4>AI Explained</h4>
+              <p>Deep dives into machine learning and AI news.</p>
+              <a href="#">Listen</a>
             </div>
-        </div>
-        <div class="col-sm-8">
-        <div class="well">
-          <h4 class="fa-archive">Past Summaries</h4>
-          <div class="past-summaries">
-          <% if (summaries && summaries.length > 0) { %>
-              <% summaries.forEach(s => { %>
-                <div class="summary-item">
-                  <strong><%= new Date(s.dateOfSummary).toLocaleDateString() %>:</strong>
-                  <p><%= s.summary %></p>
-                </div>
-             <% }) %>
-            <% } else { %>
-              <p>There are no summaries. Try it out now.</p>
-           <% } %>
-        </div>
-        </div>
-        </div>
-
-        <div class="col-sm-8">
-          <div class="well">
-          <h3 class="fa-microphone">Summarize your Podcast</h3>
-          <p>Paste your podcast transcript or uplaod an audio file to get a summary.</p>
-          
-
-          <form action="/summarize" method="POST" enctype="multipart/form-data" id="summarizePod">
-            <div class="form-group">
-            <textarea placeholder="Paste your transcript here" name="transcript" class="form-control" rows="8"></textarea>
+            <div class="podcast-card">
+              <h4>Modern Dev</h4>
+              <p>Weekly episodes about software engineering.</p>
+              <a href="#">Listen</a>
             </div>
-
-            <div class="form-group">
-              <label>Or upload audio:</label>
-              <input type="file" name="audio" accept="audio/*" class="form-control">
-            </div>
-
-            <button type="submit" class="btn btn-primary">Create Summary</button>
-          </form>
           </div>
         </div>
-        
 
+      </div>
+    </section>
+    <% } %>
+
+
+    <section class="block">
+      <h2>Past Summaries</h2>
+
+      <input type="text" id="search-summaries" placeholder="Search summaries" class="search">
+
+      <div class="scroll">
+        <% if (summaries && summaries.length > 0) { %>
+          <% summaries.forEach(s => { %> 
+            <div class="feed" data-id="<%= s._id %>">
+              <strong><%= new Date(s.dateOfSummary).toLocaleDateString() %>:</strong>
+              <p><%= s.summary %></p>
+
+              <button class="copy-summary" data-text="<%= s.summary %>">Copy</button>
+              <button class="delete-summary">Delete</button>
+
+              <div class="rating">
+                <% for (let i = 1; i <=5; i++) { %>
+                <i class="fa fa-star rating-star <%= (s.rating && s.rating >= i) ? 'active' : '' %>"
+                  data-value="<%= i %>"></i>
+                <% } %>
+              </div>
+
+              <% if (s.hashtags && s.hashtags.length > 0) { %>
+              <div class="hashtags">
+                <% s.hashtags.forEach(tag => { %> 
+                <span class="tag"><%= tag %></span>
+               <% }) %>
+              </div>
+             <% } %>
+            </div>
+       <% }) %>
+       <% } else { %> 
+        <p>No past summaries yet? Start creating one above!</p>
+       <% } %>
+      </div>
+    </section>
+
+  </main>
+</div>
 
 
 <script src="main.js"></script>
