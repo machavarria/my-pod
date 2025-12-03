@@ -123,7 +123,7 @@ module.exports = function(app, passport, db) {
           });
         }
 
-        const prompt = `Summarize the following podcast transcript as if you are the host speaking directly to your audience.
+        const prompt = `Summarize the following podcast transcript as if you are the host speaking directly to your audience and start off with something different.
         Make it conversational, friendly, and engaging. Then generate 5-7 SEO-friendly hashtags.
         Return it like: "..." and then "tag1", "tag2", ...
         

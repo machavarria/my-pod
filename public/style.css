@@ -373,6 +373,14 @@ body {
   border-radius: 3px;
 }
 
+.landing-footer {
+  text-align: center;
+  margin-top: 40px;
+  padding: 20px;
+  color: #777;
+  font-size: 1rem;
+}
+
 /* Responsive */
 @media (max-width: 992px) {
   .createSpace {
@@ -384,5 +392,139 @@ body {
     position: absolute;
     width: 100%;
     z-index: 10;
+  }
+}
+
+
+/* ================================
+   Ultra-Wide Screens (2560px+)
+   ================================ */
+@media (min-width: 2560px) {
+
+  body {
+    font-size: 20px; /* Base text increase */
+  }
+
+  /* Bigger landing area */
+  .landing-container {
+    max-width: 1100px;
+    padding: 4rem;
+  }
+
+  .landing-container h1 {
+    font-size: 5rem;
+  }
+
+  .landing-container p {
+    font-size: 3rem;
+  }
+
+  .landing-container img {
+    max-width: 70%;
+  }
+
+  .landing-btn {
+    font-size: 2rem;
+    padding: 16px 28px;
+  }
+
+  /* Header */
+  .page-header h1 {
+    font-size: 3rem;
+  }
+
+  .page-header p {
+    font-size: 1.5rem;
+  }
+
+  /* Sidebar */
+  .menu {
+    width: 350px;
+    padding: 2.5rem;
+  }
+
+  .menu .title {
+    font-size: 5rem;
+  }
+
+  .menu .top-podcasts h3 {
+    font-size: 1.8rem;
+  }
+
+  .follow-btn {
+    padding: 10px 16px;
+    font-size: 1.2rem;
+  }
+
+  /* Push main content wider */
+  .createSpace {
+    margin-left: 380px;
+    padding: 3rem 4rem;
+    max-width: 2000px;
+  }
+
+  /* Page header */
+  .projectHeader h1 {
+    font-size: 5rem;
+  }
+
+  .projectHeader .paste {
+    font-size: 2rem;
+  }
+
+  /* Panels and text areas */
+  .panel {
+    padding: 3rem;
+  }
+
+  .composer textarea {
+    font-size: 2.5rem;
+    height: 400px;
+  }
+
+  .composer button {
+    font-size: 2rem;
+    padding: 1.2rem 2rem;
+  }
+
+  /* Summary blocks */
+  .result h3,
+  .feed strong {
+    font-size: 4rem;
+  }
+
+  .scroll {
+    max-height: 600px;
+    padding: 20px;
+  }
+
+  /* Podcast grid optimization */
+  .podcast-grid {
+    gap: 20px;
+  }
+
+  .podcast-card {
+    padding: 25px;
+    border-radius: 10px;
+    max-width: 420px;
+  }
+
+  .podcast-card h4 {
+    font-size: 32px;
+  }
+
+  .podcast-card p {
+    font-size: 20px;
+  }
+
+  .podcast-card a {
+    padding: 10px 18px;
+    font-size: 1.1rem;
+  }
+
+  /* Tags */
+  .tag {
+    font-size: 1rem;
+    padding: 0.4rem 0.7rem;
   }
 }
