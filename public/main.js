@@ -23,6 +23,49 @@ Array.from(copyButton).forEach(function (btn) {
   });
 });
 
+let latestSummaryBlock = document.querySelector(".result");
+
+if (latestSummaryBlock) {
+  let summaryText = latestSummaryBlock.querySelector("p").innerText;
+
+  fetch("/recommended-podcasts", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ summary: summaryText })
+  })
+
+  .then(res => res.json())
+  .then (data => {
+    if (data.success) {
+      insertRecommendations(data.results);
+    }
+  })
+  .catch(err => console.log("Recommendation fetch error", err));
+}
+
+function insertRecommendations(recommendations) {
+  let container = document.querySelector(".related-podcasts .podcast-grid");
+  
+  if(!container) return;
+
+  container.innerHTML = "";
+
+  recommendations.forEach(ep => {
+    let card = document.createElement("div");
+    card.classList.add("podcast-card");
+
+    card.innerHTML = `
+    <img src="${ep.image || ep.thumbnail || ''}" style="width:100%; border-radius:6px; margin-bottom:10px
+    <h4>${ep.podcast_title_original}</h4>
+    <p> ${ep.description_original.substring(0, 120)}...</p>
+    <a href="${ep.listennotes_url}" target="_blank">Listen to Episode</a>;
+    <br>
+    <a href="${ep.podcast?.listennotes_url}" target="_blank">View Podcast</a>`;
+
+    container.appendChild(card)
+  })
+}
+
 let stars = document.getElementsByClassName("rating-star");
 
 Array.from(stars).forEach(function (star) {

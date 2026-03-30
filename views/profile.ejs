@@ -62,18 +62,7 @@
 
         <div class="related-podcasts">
           <h3>Related Podcasts:</h3>
-          <div class="podcast-grid">
-            <div class="podcast-card">
-              <h4>AI Explained</h4>
-              <p>Deep dives into machine learning and AI news.</p>
-              <a href="#">Listen</a>
-            </div>
-            <div class="podcast-card">
-              <h4>Modern Dev</h4>
-              <p>Weekly episodes about software engineering.</p>
-              <a href="#">Listen</a>
-            </div>
-          </div>
+          <div class="podcast-grid"></div>
         </div>
 
       </div>
@@ -98,8 +87,7 @@
 
               <div class="rating">
                 <% for (let i = 1; i <=5; i++) { %>
-                <i class="fa fa-star rating-star <%= (s.rating && s.rating >= i) ? 'active' : '' %>"
-                  data-value="<%= i %>"></i>
+                <i class="fa fa-star rating-star <%= (s.rating && s.rating >= i) ? 'active' : '' %>" data-value="<%= i %>"></i>
                 <% } %>
               </div>
 

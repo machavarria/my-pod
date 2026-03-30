@@ -527,4 +527,8 @@ body {
     font-size: 1rem;
     padding: 0.4rem 0.7rem;
   }
+
+  .landing-footer{
+    font-size: 2rem;
+  }
 }

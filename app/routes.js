@@ -6,7 +6,38 @@ const fs = require('fs')
 const ffmpeg = require('fluent-ffmpeg')
 const upload = multer({ dest: 'uploads/'})
 const { GoogleGenAI } = require("@google/genai")
+const axios = require("axios")
 const geminiAi = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY })
+
+async function extractKeywords (summary) {
+  try {
+    const prompt = `
+    Extract 5-6 short, relevant keywords from this podcast summary. Only return a comma-seperated list. No sentences.
+    
+    Summary: "${summary}"
+    `;
+
+    const response = await geminiAi.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: [
+        {
+          role: "user",
+          parts: [{text: prompt}]
+        }
+      ]
+    });
+
+    const text =
+      response?.response?.text?.()?.trim() ||
+      response?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+    return text.split(",").map(k => k.trim()).filter(Boolean);
+
+  } catch  (err) {
+    console.log("Keywords extraction error:", err);
+    return [];
+  }
+}
 
 async function transcribeAudioGoogle(filePath) {
   console.log("Using Gemini to transcribe")
@@ -202,10 +233,51 @@ module.exports = function(app, passport, db) {
       }
     })
 
+    app.post("/recommended-podcasts", isLoggedIn, async (req, res) => {
+      try {
+        const { summary } = req.body;
+
+        if (!summary || summary.length < 5) {
+          return res.json({ success: false, message: "No summary provided." });
+        }
+
+        let keywords = await extractKeywords(summary);
+
+        keywords = keywords.filter(k => k.length > 2 && !["podcast", "episode", "discussion", "talk"].includes(k.toLowerCase()));
+
+        if (keywords.length === 0) {
+          return res.json({success: false, message: "No usable keywords found."});
+        }
+
+        const query = keywords.join(" ");
+
+        const response = await axios.get("https://listen-api.listennotes.com/api/v2/search", {
+          params: {
+            q: query,
+            type: "episode",
+            sort_by_date: 0,
+            offset: 0,
+            page_size: 3
+          },
+          headers: {
+            "X-ListenAPI-Key": process.env.LISTEN_NOTES_API_KEY
+          }
+        });
+
+        res.json({
+          success: true,
+          results: response.data.results
+        });
+      } catch (err) {
+        console.log("Recommendation Error", err);
+        res.json({ success: false, message: "Error fetching recommendations." })
+      }
+    });
+
     app.post("/rate-summary", isLoggedIn, async (req, res) => {
       try {
         await db.collection("summaries").updateOne(
-          { _id: new ObjectID(req.body.summaryID), userID: req.user._id },
+          { _id: new ObjectID(req.body.summaryID), userId: req.user._id },
           { $set: { rating: Number(req.body.rating) } }
         )
         res.json({ success: true })

@@ -3,6 +3,7 @@
   "main": "server.js",
   "dependencies": {
     "@google/genai": "^1.30.0",
+    "axios": "^1.13.2",
     "bcrypt": "*",
     "bcrypt-nodejs": "^0.0.3",
     "body-parser": "^1.18.3",
