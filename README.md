@@ -1,7 +1,7 @@
-# Podcast AI Companion 🎙
+# MyPod AI Companion 🎙
 
 ### Description
-User can Login/Sign up to make an account to the Podcast AI Companion app where they can take their podcast transcript and paste it into the app to give them a summarized version of their whole podcast to uplaod. The user also will have their summaries saved and can see all of their past summaries to never lose them.
+User can Login/Sign up to make an account to the MyPod AI Companion app where they can take their podcast transcript and paste it into the app to give them a summarized version of their whole podcast to uplaod. The user also will have their summaries saved and can see all of their past summaries to never lose them.
 
 ![](public/img/demo-project-screenshot.png)
 
