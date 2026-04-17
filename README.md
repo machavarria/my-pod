@@ -28,7 +28,3 @@ User can Login/Sign up to make an account to the MyPod AI Companion app where th
 
 1. run `node server.js`
 2. Navigate to `localhost:8080`
-
-## Credit
-
-Modified from Scotch.io's auth tutorial
